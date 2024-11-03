@@ -4,22 +4,25 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "crop_details")
+@Table(name = "monitoring_log")
 @Entity
-public class CropDetailsEntity implements SuperEntity {
+public class MonitoringLogEntity implements SuperEntity {
     @Id
     private String logCode;
-    private LocalDate date;
-    private String observations;
+
+    @Temporal(TemporalType.DATE)
+    private Date logDate;
+
+    @Column(columnDefinition = "TEXT")
+    private String logDetails;
 
     @Column(columnDefinition = "LONGTEXT")
-    private String observationImage;
+    private String observedImage;
 
     @ManyToOne
     @JoinColumn(name = "fieldCode")
@@ -30,7 +33,6 @@ public class CropDetailsEntity implements SuperEntity {
     private CropEntity crop;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "staffId")
     private StaffEntity staff;
-
 }
