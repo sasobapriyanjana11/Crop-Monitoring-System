@@ -5,34 +5,34 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "monitoring_log")
 @Entity
-public class MonitoringLogEntity implements SuperEntity {
+@Table(name = "MonitoringLog")
+public class MonitoringLogEntity implements SuperEntity{
     @Id
     private String logCode;
-
-    @Temporal(TemporalType.DATE)
     private Date logDate;
-
     @Column(columnDefinition = "TEXT")
-    private String logDetails;
-
+    private String observationDetails;
     @Column(columnDefinition = "LONGTEXT")
     private String observedImage;
 
-    @ManyToOne
-    @JoinColumn(name = "fieldCode")
+//    @ManyToMany(mappedBy = "monitoringLogEntities")
+//    private List<FieldEntity> fieldEntities;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name ="fieldCode")
     private FieldEntity field;
 
-    @ManyToOne
-    @JoinColumn(name = "cropCode")
-    private CropEntity crop;
+    @ManyToMany(mappedBy = "logEntities")
+    private List<CropEntity> cropEntities;
 
-    @ManyToOne
-    @JoinColumn(name = "staffId")
-    private StaffEntity staff;
+    @ManyToMany(mappedBy = "staffLogEntities")
+    private List<StaffEntity> staffEntities;
+
+
 }
