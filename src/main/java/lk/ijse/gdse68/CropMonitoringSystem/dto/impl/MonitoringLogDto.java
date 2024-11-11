@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -14,11 +14,9 @@ import java.util.List;
 public class MonitoringLogDto implements MonitoringLogResponse,SuperDto {
 
     private String logCode;
-    private String logDate;
-    private String logDetails;
+    private Date logDate;
+    private String observationDetails;
     private String observedImage;
-    private List<String> fieldCodes; // List of fields associated with this log
-    private List<String> cropCodes; // List of crops associated with this log
-    private List<String> staffIds; // List of staff members involved in this log
+    private String fieldCode;
 }
 
