@@ -26,6 +26,9 @@ public class AppUtil {
         return "Staff- "+ UUID.randomUUID();
     }
 
+    public static String createVehicleId(){
+        return "Vehicle- "+ UUID.randomUUID();
+    }
 
     public static String toBase64ProfilePic(MultipartFile profilePic){
         String proPicBase64=null;
