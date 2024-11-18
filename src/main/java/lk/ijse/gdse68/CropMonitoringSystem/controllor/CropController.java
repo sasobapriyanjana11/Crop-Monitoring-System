@@ -53,7 +53,7 @@ public class CropController {
         }
     }
 
-    @PutMapping(value = "/{userId}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(value = "/{cropCode}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void>  updateUser(@PathVariable("cropCode") String cropCode,
                                             @RequestPart("commonName")String commonName,
                                             @RequestPart("scientificName")String scientificName,
