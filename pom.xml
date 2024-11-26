@@ -60,11 +60,11 @@
             <version>3.2.1</version>
         </dependency>
 
-        <!-- Apache Commons FileUpload for handling file uploads -->
+        <!-- https://mvnrepository.com/artifact/org.locationtech.jts/jts-core -->
         <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>1.4</version>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts-core</artifactId>
+            <version>1.20.0</version>
         </dependency>
 
         <!-- SLF4J API for logging interface (optional if specific version needed) -->
