@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.geo.Point;
 
 import java.util.List;
 
@@ -17,10 +18,10 @@ public class FieldEntity implements SuperEntity{
     @Id
     private String fieldCode;
     private String fieldName;
-    private Double extentSize;
+    private double extentSize;
 
-    @Column(columnDefinition = "POINT")
-    private String fieldLocation;
+   @Column
+    private Point fieldLocation;
 
     @Column(columnDefinition = "LONGTEXT")
     private String image1;  // Renamed from "fieldImage1"
@@ -42,7 +43,10 @@ public class FieldEntity implements SuperEntity{
             inverseJoinColumns = @JoinColumn(name = "staffId")
     )
     private List<StaffEntity> assignedStaff;
-
+    //new one
+//@OneToMany(mappedBy = "field", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//private List<FieldStaffDetailsEntity> fieldStaffDetails;
+//
  @OneToMany(mappedBy ="field",cascade = CascadeType.ALL,fetch = FetchType.LAZY )
     private List<MonitoringLogEntity>monitoringLog;
 
