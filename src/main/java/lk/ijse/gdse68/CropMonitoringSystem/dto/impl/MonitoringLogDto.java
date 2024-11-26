@@ -5,7 +5,6 @@ import lk.ijse.gdse68.CropMonitoringSystem.dto.SuperDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.Date;
 
 @Data

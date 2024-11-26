@@ -2,7 +2,6 @@ package lk.ijse.gdse68.CropMonitoringSystem.service;
 
 import lk.ijse.gdse68.CropMonitoringSystem.customObj.MonitoringLogResponse;
 import lk.ijse.gdse68.CropMonitoringSystem.dto.impl.MonitoringLogDto;
-
 import java.util.List;
 
 public interface MonitoringLogService {
