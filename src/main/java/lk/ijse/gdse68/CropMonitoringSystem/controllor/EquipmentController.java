@@ -1,5 +1,6 @@
 package lk.ijse.gdse68.CropMonitoringSystem.controllor;
 
+import lk.ijse.gdse68.CropMonitoringSystem.customObj.EquipmentResponse;
 import lk.ijse.gdse68.CropMonitoringSystem.dto.impl.EquipmentDto;
 import lk.ijse.gdse68.CropMonitoringSystem.exception.DataPersistFailedException;
 import lk.ijse.gdse68.CropMonitoringSystem.exception.EquipmentNotFoundException;
@@ -65,5 +66,9 @@ public class EquipmentController {
         return equipmentService.getAllEquipments();
     }
 
+    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public EquipmentResponse getEquipmentById(@PathVariable("id")String id){
+        return equipmentService.getSelectedEquipmentp(id);
+    }
 
 }
