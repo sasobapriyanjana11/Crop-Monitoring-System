@@ -1,5 +1,6 @@
 package lk.ijse.gdse68.CropMonitoringSystem.controllor;
 
+import lk.ijse.gdse68.CropMonitoringSystem.customObj.VehicleResponse;
 import lk.ijse.gdse68.CropMonitoringSystem.dto.impl.VehicleDto;
 import lk.ijse.gdse68.CropMonitoringSystem.exception.CropNotFoundException;
 import lk.ijse.gdse68.CropMonitoringSystem.exception.DataPersistFailedException;
@@ -65,6 +66,11 @@ public class VehicleController {
         public List<VehicleDto> getAllVehicles(){
             return vehicleService.getAllVehicles();
      }
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public VehicleResponse getVehicleById(@PathVariable("id") String id) {
+        return vehicleService.getSelectedVehicle(id);
+    }
 
 
 }
