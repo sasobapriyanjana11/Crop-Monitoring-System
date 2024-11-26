@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,5 +20,6 @@ public class CropDto implements SuperDto, CropResponse {
     private String category;
     private String cropSeason;
     private String fieldCode;
+    private List<String> logCode;
 }
 
