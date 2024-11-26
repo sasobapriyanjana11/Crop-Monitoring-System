@@ -6,8 +6,8 @@ import lk.ijse.gdse68.CropMonitoringSystem.dto.SuperDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -31,5 +31,6 @@ public class StaffDto implements SuperDto, StaffResponse {
     private String email;
     private String equipmentCode;
     private String vehicleCode;
+     private List<String> logCode;
 }
 

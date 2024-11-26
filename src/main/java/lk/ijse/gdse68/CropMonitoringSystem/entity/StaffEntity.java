@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -34,9 +33,14 @@ public class StaffEntity implements SuperEntity{
     @JoinTable(name = "staff_log",
             joinColumns = @JoinColumn(name = "staffId"),inverseJoinColumns = @JoinColumn(name = "logCode"))
     private List<MonitoringLogEntity> staffLogEntities;
-
+//new one
     @ManyToMany(mappedBy = "assignedStaff")
     private List<FieldEntity> fieldEntities;
+
+//    @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<FieldStaffDetailsEntity> fieldStaffDetails;
+
+    //
 
     @ManyToOne
     @JoinColumn(name ="equipmentCode")

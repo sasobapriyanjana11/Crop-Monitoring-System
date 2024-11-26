@@ -3,18 +3,13 @@ package lk.ijse.gdse68.CropMonitoringSystem.service.impl;
 import jakarta.transaction.Transactional;
 import lk.ijse.gdse68.CropMonitoringSystem.customObj.StaffErrorResponse;
 import lk.ijse.gdse68.CropMonitoringSystem.customObj.StaffResponse;
-import lk.ijse.gdse68.CropMonitoringSystem.dao.EquipmentDao;
-import lk.ijse.gdse68.CropMonitoringSystem.dao.StaffDao;
-import lk.ijse.gdse68.CropMonitoringSystem.dao.VehicleDao;
+import lk.ijse.gdse68.CropMonitoringSystem.dao.*;
 import lk.ijse.gdse68.CropMonitoringSystem.dto.impl.StaffDto;
 import lk.ijse.gdse68.CropMonitoringSystem.entity.EquipmentEntity;
+import lk.ijse.gdse68.CropMonitoringSystem.entity.MonitoringLogEntity;
 import lk.ijse.gdse68.CropMonitoringSystem.entity.StaffEntity;
 import lk.ijse.gdse68.CropMonitoringSystem.entity.VehicleEntity;
-import lk.ijse.gdse68.CropMonitoringSystem.enums.Gender;
-import lk.ijse.gdse68.CropMonitoringSystem.exception.DataPersistFailedException;
-import lk.ijse.gdse68.CropMonitoringSystem.exception.EquipmentNotFoundException;
-import lk.ijse.gdse68.CropMonitoringSystem.exception.StaffNotFoundException;
-import lk.ijse.gdse68.CropMonitoringSystem.exception.VehicleNotFoundException;
+import lk.ijse.gdse68.CropMonitoringSystem.exception.*;
 import lk.ijse.gdse68.CropMonitoringSystem.service.StaffService;
 import lk.ijse.gdse68.CropMonitoringSystem.util.AppUtil;
 import lk.ijse.gdse68.CropMonitoringSystem.util.Mapping;
@@ -35,109 +30,100 @@ public class StaffServiceImpl implements StaffService {
     private VehicleDao vehicleDao;
     @Autowired
     private Mapping mapping;
+    @Autowired
+    private MonitoringLogDao monitoringLogDao;
 
-//    @Override
-//    public void saveStaff(StaffDto staffDto) {
-//        staffDto.setStaffId(AppUtil.createStaffId());
-//        var StaffEntity=mapping.convertToEntity(staffDto);
-//        var saveStaff=staffDao.save(StaffEntity);
-//        if(saveStaff==null){
-//            throw new DataPersistFailedException("cannot add staff");
-//        }
-//    }
-@Override
-public void saveStaff(StaffDto staffDto) {
-    // Set a unique staff ID for the new staff member
-    staffDto.setStaffId(AppUtil.createStaffId());
 
-    // Convert StaffDto to StaffEntity
-    StaffEntity staffEntity = mapping.convertToEntity(staffDto);
+    @Override
+    public void saveStaff(StaffDto staffDto) {
+        staffDto.setStaffId(AppUtil.createStaffId());
 
-    // Check if equipmentCode exists and fetch the corresponding EquipmentEntity
-    if (staffDto.getEquipmentCode() != null) {
-        EquipmentEntity equipmentEntity = equipmentDao.findByEquipmentCode(staffDto.getEquipmentCode());
-        staffEntity.setEquipment(equipmentEntity); // Set the equipment entity in StaffEntity
+        // Convert DTO to Entity
+        StaffEntity staffEntity = mapping.convertToEntity(staffDto);
+
+        // Fetch and set the EquipmentEntity if equipmentCode is provided
+        if (staffDto.getEquipmentCode() != null) {
+            EquipmentEntity equipmentEntity = equipmentDao.findById(staffDto.getEquipmentCode())
+                    .orElseThrow(() -> new EquipmentNotFoundException("Equipment with code " + staffDto.getEquipmentCode() + " not found!"));
+            staffEntity.setEquipment(equipmentEntity);
+        }
+
+        // Fetch and set the VehicleEntity if vehicleCode is provided
+        if (staffDto.getVehicleCode() != null) {
+            VehicleEntity vehicleEntity = vehicleDao.findById(staffDto.getVehicleCode())
+                    .orElseThrow(() -> new DataPersistFailedException("Vehicle with code " + staffDto.getVehicleCode() + " not found!"));
+            staffEntity.setVehicle(vehicleEntity);
+        }
+
+        // Save the StaffEntity
+        StaffEntity savedEntity = staffDao.save(staffEntity);
+
+        // Check if saving was successful
+        if (savedEntity == null || savedEntity.getStaffId() == null) {
+            throw new DataPersistFailedException("Error occurred while staff persistent!");
+        }
     }
-
-    // Check if vehicleCode exists and fetch the corresponding VehicleEntity
-    if (staffDto.getVehicleCode() != null) {
-        VehicleEntity vehicleEntity = vehicleDao.findByVehicleCode(staffDto.getVehicleCode());
-        staffEntity.setVehicle(vehicleEntity); // Set the vehicle entity in StaffEntity
-    }
-
-    // Save the staff entity
-    StaffEntity savedStaff = staffDao.save(staffEntity);
-    if (savedStaff == null) {
-        throw new DataPersistFailedException("Cannot add staff");
-    }
-}
 
 
     @Override
     @Transactional
     public void updateStaff(String staffId, StaffDto staffDto) {
-        Optional<StaffEntity> tmpStaff = staffDao.findById(staffId);
-        if (tmpStaff.isEmpty()) {
-            throw new StaffNotFoundException("Staff not found");
-        } else {
-            StaffEntity staff = tmpStaff.get();
+        // Fetch the staff entity by ID
+        StaffEntity staffEntity = staffDao.findById(staffId)
+                .orElseThrow(() -> new StaffNotFoundException("Staff by this ID does not exist!"));
 
-            // Update basic information
-            staff.setFirstName(staffDto.getFirstName());
-            staff.setLastName(staffDto.getLastName());
-            staff.setDesignation(staffDto.getDesignation());
+        // Update basic fields from DTO to Entity
+        staffEntity.setFirstName(staffDto.getFirstName());
+        staffEntity.setLastName(staffDto.getLastName());
+        staffEntity.setDesignation(staffDto.getDesignation());
+        staffEntity.setGender(staffDto.getGender());
+        staffEntity.setJoinDate(staffDto.getJoinDate());
+        staffEntity.setDOB(staffDto.getDOB());
+        staffEntity.setBuildingNo(staffDto.getBuildingNo());
+        staffEntity.setLane(staffDto.getLane());
+        staffEntity.setCity(staffDto.getCity());
+        staffEntity.setState(staffDto.getState());
+        staffEntity.setPostalCode(staffDto.getPostalCode());
+        staffEntity.setContactNo(staffDto.getContactNo());
+        staffEntity.setEmail(staffDto.getEmail());
 
-            // Update gender enum directly
-            staff.setGender(String.valueOf(Gender.valueOf(staffDto.getGender())));
-
-            // Update other fields
-            staff.setJoinDate(staffDto.getJoinDate());
-            staff.setDOB(staffDto.getDOB());
-            staff.setBuildingNo(staffDto.getBuildingNo());
-            staff.setLane(staffDto.getLane());
-            staff.setCity(staffDto.getCity());
-            staff.setState(staffDto.getState());
-            staff.setPostalCode(staffDto.getPostalCode());
-            staff.setContactNo(staffDto.getContactNo());
-            staff.setEmail(staffDto.getEmail());
-
-            // Update equipment and vehicle associations if applicable
-            if (staffDto.getEquipmentCode() != null) {
-                EquipmentEntity equipment = equipmentDao.findById(staffDto.getEquipmentCode())
-                        .orElseThrow(() -> new EquipmentNotFoundException("Equipment not found"));
-                staff.setEquipment(equipment);
-            }
-
-            if (staffDto.getVehicleCode() != null) {
-                VehicleEntity vehicle = vehicleDao.findById(staffDto.getVehicleCode())
-                        .orElseThrow(() -> new VehicleNotFoundException("Vehicle not found"));
-                staff.setVehicle(vehicle);
-            }
-
-            // Save updated entity
-            staffDao.save(staff);
+        // Check if equipmentCode is present and set it
+        if (staffDto.getEquipmentCode() != null) {
+            EquipmentEntity equipmentEntity = equipmentDao.findById(staffDto.getEquipmentCode())
+                    .orElseThrow(() -> new EquipmentNotFoundException("Equipment not found for equipmentCode: " + staffDto.getEquipmentCode()));
+            staffEntity.setEquipment(equipmentEntity);
         }
-
-
-
-}
+        // Check if vehicleCode is present and set it
+        if (staffDto.getVehicleCode() != null) {
+            VehicleEntity vehicleEntity = vehicleDao.findById(staffDto.getVehicleCode())
+                    .orElseThrow(() -> new VehicleNotFoundException("Vehicle not found for vehicleCode: " + staffDto.getVehicleCode()));
+            staffEntity.setVehicle(vehicleEntity);
+        }
+        // Check if fieldCode is present and set it
+        if (staffDto.getLogCode() != null) {
+            List<MonitoringLogEntity> logEntities =monitoringLogDao .findAllById(staffDto.getLogCode());
+            staffEntity.setStaffLogEntities(logEntities);
+        }
+        // Save the updated staff entity
+        staffDao.save(staffEntity);
+    }
 
     @Override
     public void deleteStaff(String staffId) {
         Optional<StaffEntity> tmpStaffEntity = staffDao.findById(staffId);
-        if(!tmpStaffEntity.isPresent()){
+        if (!tmpStaffEntity.isPresent()) {
             throw new StaffNotFoundException("staff member not found");
-        }else{
+        } else {
             staffDao.delete(tmpStaffEntity.get());
         }
     }
 
     @Override
     public StaffResponse getSelectedStaff(String staffId) {
-        if(staffDao.existsById(staffId)){
+        if (staffDao.existsById(staffId)) {
             return mapping.convertStaffEntityToDTO(staffDao.getReferenceById(staffId));
-        }else{
-            return new StaffErrorResponse(0," staff member not found");
+        } else {
+            return new StaffErrorResponse(0, " staff member not found");
         }
     }
 
@@ -145,4 +131,5 @@ public void saveStaff(StaffDto staffDto) {
     public List<StaffDto> getAllStaff() {
         return mapping.convertS_ToDTOList(staffDao.findAll());
     }
+
 }

@@ -1,5 +1,6 @@
 package lk.ijse.gdse68.CropMonitoringSystem.controllor;
 
+import lk.ijse.gdse68.CropMonitoringSystem.customObj.StaffResponse;
 import lk.ijse.gdse68.CropMonitoringSystem.dto.impl.StaffDto;
 import lk.ijse.gdse68.CropMonitoringSystem.exception.DataPersistFailedException;
 import lk.ijse.gdse68.CropMonitoringSystem.exception.StaffNotFoundException;
@@ -34,15 +35,16 @@ public class StaffController {
 
     @PatchMapping(value = "/{staffId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateStaff(@PathVariable ("staffId") String staff_id, @RequestBody StaffDto staffDto) {
-
         try {
             if (staffDto == null && (staff_id == null || staffDto.equals(""))) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             staffService.updateStaff(staff_id, staffDto);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
         } catch (StaffNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -64,4 +66,12 @@ public class StaffController {
     public List<StaffDto> getAllStaff(){
         return staffService.getAllStaff();
     }
+
+    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public StaffResponse getStaffByID(@PathVariable ("id")String id){
+        return staffService.getSelectedStaff(id);
+    }
+
+
+
 }
