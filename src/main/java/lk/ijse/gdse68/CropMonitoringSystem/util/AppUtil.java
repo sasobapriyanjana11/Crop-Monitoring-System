@@ -1,7 +1,10 @@
 package lk.ijse.gdse68.CropMonitoringSystem.util;
 
 import org.springframework.web.multipart.MultipartFile;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 
+import java.io.IOException;
 import java.util.Base64;
 import java.util.UUID;
 
@@ -30,15 +33,16 @@ public class AppUtil {
         return "Vehicle- "+ UUID.randomUUID();
     }
 
-    public static String toBase64ProfilePic(MultipartFile profilePic){
-        String proPicBase64=null;
-        try{
-            byte[] imageByteCollection= profilePic.getBytes();
-            proPicBase64= Base64.getEncoder().encodeToString(imageByteCollection);
-
-        }catch(Exception e ){
+    public static String toBase64Image(MultipartFile file) {
+        try {
+            byte[] imageBytes = file.getBytes();
+            return Base64.getEncoder().encodeToString(imageBytes);
+        } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        return proPicBase64;
+    }
+    public static String toBase64ProfilePic(byte [] profilePic){
+        return Base64.getEncoder().encodeToString(profilePic);
     }
 }
