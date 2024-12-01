@@ -1,8 +1,6 @@
 package lk.ijse.gdse68.CropMonitoringSystem.util;
 
 import org.springframework.web.multipart.MultipartFile;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
 
 import java.io.IOException;
 import java.util.Base64;
