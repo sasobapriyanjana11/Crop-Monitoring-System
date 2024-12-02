@@ -32,7 +32,8 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
 
     @Override
     public void saveMonitoringLog(MonitoringLogDto monitoringLogDto) {
-        monitoringLogDto.setLogCode(AppUtil.createMonitoringLogId());
+//        monitoringLogDto.setLogCode(AppUtil.createMonitoringLogId());
+        monitoringLogDto.setLogCode(monitoringLogDto.getLogCode());
         var MonitoringLogoEntity=mapping.convertToEntity(monitoringLogDto);
         var saveMonitoringLog=monitoringLogDao.save(MonitoringLogoEntity);
         if(saveMonitoringLog==null){

@@ -36,7 +36,8 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public void saveEquipment(EquipmentDto equipmentDto) {
-     equipmentDto.setEquipmentCode(AppUtil.createEquipmentId());
+//     equipmentDto.setEquipmentCode(AppUtil.createEquipmentId());
+        equipmentDto.setEquipmentCode(equipmentDto.getEquipmentCode());
         var equipmentEntity = mapping.convertToEntity(equipmentDto);
         var saveEquipment= equipmentDao.save(equipmentEntity);
         if(saveEquipment==null){

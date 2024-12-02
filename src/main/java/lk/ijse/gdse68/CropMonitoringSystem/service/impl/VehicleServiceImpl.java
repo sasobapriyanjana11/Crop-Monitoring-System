@@ -27,7 +27,8 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public void saveVehicle(VehicleDto vehicleDto) {
-        vehicleDto.setVehicleCode(AppUtil.createVehicleId());
+//        vehicleDto.setVehicleCode(AppUtil.createVehicleId());
+        vehicleDto.setVehicleCode(vehicleDto.getVehicleCode());
         var VehicleEntity=mapping.convertToEntity(vehicleDto);
         var saveVehicle=vehicleDao.save(VehicleEntity);
         if(saveVehicle==null){

@@ -16,7 +16,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/equipments")
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://127.0.0.1:5500", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH, RequestMethod.OPTIONS})
+//@CrossOrigin("*")
 @RequiredArgsConstructor
 public class EquipmentController {
     @Autowired
@@ -25,6 +26,9 @@ public class EquipmentController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveEquipment(@RequestBody EquipmentDto equipmentDto)  {
         try{
+            if (equipmentDto == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Added null check
+            }
             equipmentService.saveEquipment(equipmentDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch(DataPersistFailedException e){

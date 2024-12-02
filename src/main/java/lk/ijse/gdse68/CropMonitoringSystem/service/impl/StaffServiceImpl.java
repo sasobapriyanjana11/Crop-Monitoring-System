@@ -36,7 +36,8 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public void saveStaff(StaffDto staffDto) {
-        staffDto.setStaffId(AppUtil.createStaffId());
+//        staffDto.setStaffId(AppUtil.createStaffId());
+        staffDto.setStaffId(staffDto.getStaffId());
 
         // Convert DTO to Entity
         StaffEntity staffEntity = mapping.convertToEntity(staffDto);
