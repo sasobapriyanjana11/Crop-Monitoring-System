@@ -32,7 +32,8 @@ public class MonitoringLogController {
     private PatternValidator patternValidator;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void>saveMonitoringLogs(@RequestParam("logDate")@DateTimeFormat(pattern="YYYY-MM-dd") Date logDate,
+    public ResponseEntity<Void>saveMonitoringLogs(@RequestParam("logCode")String logCode,
+                                                   @RequestParam("logDate")@DateTimeFormat(pattern="YYYY-MM-dd") Date logDate,
                                                   @RequestParam("observationDetails") String observationDetails,
                                                   @RequestParam("observedImage") MultipartFile observedImage,
                                                   @RequestParam("fieldCode") String fieldCode){
@@ -40,6 +41,7 @@ public class MonitoringLogController {
             String base64ProfilePic1 = AppUtil.toBase64Image(observedImage);
 
             MonitoringLogDto monitoringLogDto=new MonitoringLogDto();
+            monitoringLogDto.setLogCode(logCode);
             monitoringLogDto.setLogDate(logDate);
             monitoringLogDto.setObservationDetails(observationDetails);
             monitoringLogDto.setObservedImage(base64ProfilePic1);
