@@ -29,7 +29,8 @@ public class CropController {
     static Logger logger = LoggerFactory.getLogger(CropController.class);
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void > createUser(
+    public ResponseEntity<Void > createCrop(
+            @RequestPart("cropCode")String cropCode,
             @RequestPart("commonName")String commonName,
             @RequestPart("scientificName")String scientificName,
             @RequestPart("image") MultipartFile image,
@@ -37,11 +38,15 @@ public class CropController {
             @RequestPart("cropSeason")String cropSeason,
             @RequestPart("fieldCode")String fieldCode
          ){
+        if (cropCode == null || cropCode.trim().isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         try {
             String base64ProfilePic = AppUtil.toBase64Image(image);
             // build the user object
             CropDto buildCropDTO = new CropDto();
+            buildCropDTO.setCropCode(cropCode);
             buildCropDTO.setCommonName(commonName);
             buildCropDTO.setScientificName(scientificName);
             buildCropDTO.setImage(base64ProfilePic);
@@ -60,8 +65,8 @@ public class CropController {
         }
     }
 
-    @PatchMapping (value = "/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity <Void> updateCrops (@PathVariable ("id") String id ,
+    @PatchMapping (value = "/{cropCode}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity <Void> updateCrops (@PathVariable ("cropCode") String id ,
                                               @RequestParam("commonName") String commonName,
                                               @RequestParam ("scientificName") String scientificName,
                                               @RequestParam("image") MultipartFile image,
@@ -108,8 +113,8 @@ public class CropController {
         return cropService.getAllCrops();
     }
 
-    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public CropResponse getCropById(@PathVariable("id") String id){
+    @GetMapping(value = "/{cropCode}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public CropResponse getCropById(@PathVariable("cropCode") String id){
         return cropService.getSelectedCrop(id);
     }
 }
