@@ -33,6 +33,7 @@ public class FieldController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> saveField(
+            @RequestParam("fieldCode")String fieldCode,
             @RequestParam("fieldName") String fieldName,
             @RequestParam("extentSize") double extentSize,
             @RequestParam("latitude") double latitude,
@@ -50,6 +51,7 @@ public class FieldController {
 
         // Build DTO
         FieldDto buildFieldDTO = new FieldDto();
+        buildFieldDTO.setFieldCode(fieldCode);
         buildFieldDTO.setFieldName(fieldName);
         buildFieldDTO.setExtentSize(extentSize);
         buildFieldDTO.setFieldLocation(new Point((int)latitude,(int)longitude));
