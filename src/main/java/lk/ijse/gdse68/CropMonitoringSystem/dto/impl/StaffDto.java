@@ -22,10 +22,7 @@ public class StaffDto implements SuperDto, StaffResponse {
     private LocalDate joinDate;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate DOB;
-    private String buildingNo;
-    private String lane;
-    private String city;
-    private String state;
+    private String address;
     private String postalCode;
     private String contactNo;
     private String email;

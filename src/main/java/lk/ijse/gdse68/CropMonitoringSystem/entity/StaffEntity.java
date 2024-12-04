@@ -20,11 +20,8 @@ public class StaffEntity implements SuperEntity{
     private String designation;
     private String gender;
     private LocalDate joinDate;
-    private LocalDate DOB;
-    private String buildingNo;
-    private String lane;
-    private String city;
-    private String state;
+    private LocalDate dob;
+    private String address;
     private String postalCode;
     private String contactNo;
     private String email;
@@ -33,14 +30,10 @@ public class StaffEntity implements SuperEntity{
     @JoinTable(name = "staff_log",
             joinColumns = @JoinColumn(name = "staffId"),inverseJoinColumns = @JoinColumn(name = "logCode"))
     private List<MonitoringLogEntity> staffLogEntities;
-//new one
+
     @ManyToMany(mappedBy = "assignedStaff")
     private List<FieldEntity> fieldEntities;
 
-//    @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<FieldStaffDetailsEntity> fieldStaffDetails;
-
-    //
 
     @ManyToOne
     @JoinColumn(name ="equipmentCode")
