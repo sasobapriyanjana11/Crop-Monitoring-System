@@ -1,4 +1,6 @@
-# crop monitoring system
+<h1 align="center">
+    <img src="https://readme-typing-svg.herokuapp.com/?font=Righteous&size=35&center=true&vCenter=true&width=1100&height=70&duration=4000&lines=Crop+Monitoring+System+Backend+-+Green+Shadow+(Pvt)+Ltd&color=105e11" />
+</h1>
 
 ### Description
 This is a backend implementation of a Crop Monitoring Management System using the Spring Framework and other Java-based technologies. The API provides endpoints to manage crops, fields, equipment, staff, vehicles, and monitoring logs. The project is built using Spring Boot for RESTful services, Hibernate for database interaction, and MySQL as the database. Lombok is used to reduce boilerplate code
