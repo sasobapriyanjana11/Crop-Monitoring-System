@@ -7,6 +7,8 @@ import lk.ijse.gdse68.CropMonitoringSystem.exception.DataPersistFailedException;
 import lk.ijse.gdse68.CropMonitoringSystem.exception.VehicleNotFoundException;
 import lk.ijse.gdse68.CropMonitoringSystem.service.VehicleService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,12 +26,16 @@ public class VehicleController {
     @Autowired
     private VehicleService vehicleService;
 
+    static Logger logger = LoggerFactory.getLogger(VehicleController.class);
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createVehicle(@RequestBody VehicleDto vehicleDto) {
         try{
             vehicleService.saveVehicle(vehicleDto);
+            logger.info("Vehicle details save successfully");
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch(DataPersistFailedException e){
+            logger.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }catch(Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -44,8 +50,10 @@ public class VehicleController {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             vehicleService.updateVehicle(vehicleCode, vehicleDto);
+            logger.info("Vehicle details update successfully");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (VehicleNotFoundException e){
+            logger.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -56,8 +64,10 @@ public class VehicleController {
     public ResponseEntity<Void> deleteVehicle(@PathVariable("vehicleCode") String vehicleCode){
         try{
             vehicleService.deleteVehicle(vehicleCode);
+            logger.info("Vehicle details delete successfully");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (CropNotFoundException e){
+            logger.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

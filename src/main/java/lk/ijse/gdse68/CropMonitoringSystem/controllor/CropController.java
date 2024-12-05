@@ -54,8 +54,11 @@ public class CropController {
             buildCropDTO.setCropSeason(cropSeason);
             buildCropDTO.setFieldCode(fieldCode);
 
-            //send to the service layer
+
+            buildCropDTO.setLogCode(null);
+
             cropService.saveCrop(buildCropDTO);
+            logger.info("crop added successfully");
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (DataPersistFailedException e){
             logger.error("There was a error while updating");
@@ -75,7 +78,6 @@ public class CropController {
                                               @RequestParam("fieldCode")String fieldCode,
                                               @RequestParam("logCode")List<String> logCode
     ){
-        //return userSERVICE.updateUser(id,userDTO) ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
         try {
 
             String base64Image = AppUtil.toBase64Image(image);
@@ -88,8 +90,10 @@ public class CropController {
             cropDTO.setFieldCode(fieldCode);
             cropDTO.setLogCode(logCode);
             cropService.updateCrop(id,cropDTO);
+            logger.info("crop updated successfully");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (CropNotFoundException e){
+            logger.error("Crop not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -100,8 +104,10 @@ public class CropController {
     public ResponseEntity<Void> deleteCrop(@PathVariable("cropCode") String cropCode){
         try{
             cropService.deleteCrop(cropCode);
+            logger.info("crop deleted successfully");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (CropNotFoundException e){
+            logger.error("Crop not found!");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

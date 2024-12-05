@@ -6,6 +6,8 @@ import lk.ijse.gdse68.CropMonitoringSystem.exception.DataPersistFailedException;
 import lk.ijse.gdse68.CropMonitoringSystem.exception.EquipmentNotFoundException;
 import lk.ijse.gdse68.CropMonitoringSystem.service.EquipmentService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,6 +24,7 @@ import java.util.List;
 public class EquipmentController {
     @Autowired
     private EquipmentService equipmentService;
+    static Logger logger = LoggerFactory.getLogger(EquipmentController.class);
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveEquipment(@RequestBody EquipmentDto equipmentDto)  {
@@ -30,6 +33,7 @@ public class EquipmentController {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Added null check
             }
             equipmentService.saveEquipment(equipmentDto);
+            logger.info("Equipment saved to database");
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch(DataPersistFailedException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -46,6 +50,7 @@ public class EquipmentController {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             equipmentService.updateEquipment(equipmentCode,equipmentDto);
+            logger.info("Equipment updated to database");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (EquipmentNotFoundException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

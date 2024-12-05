@@ -8,6 +8,8 @@ import lk.ijse.gdse68.CropMonitoringSystem.service.MonitoringLogService;
 import lk.ijse.gdse68.CropMonitoringSystem.util.AppUtil;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.internal.constraintvalidators.bv.PatternValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,7 @@ public class MonitoringLogController {
     @Autowired
     private FieldService fieldService;
     private PatternValidator patternValidator;
+    static Logger logger = LoggerFactory.getLogger(MonitoringLogController.class);
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void>saveMonitoringLogs(@RequestParam("logCode")String logCode,
@@ -48,8 +51,10 @@ public class MonitoringLogController {
             monitoringLogDto.setFieldCode(fieldCode);
 
             monitoringLogService.saveMonitoringLog(monitoringLogDto);
+            logger.info("Save Monitoring Log Success");
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (MonitoringLogException e){
+            logger.warn("bad request");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -72,6 +77,7 @@ public class MonitoringLogController {
             updatedMonitoringLogDto.setFieldCode(fieldCode);
 
             monitoringLogService.updateMonitoringLog(logCode,updatedMonitoringLogDto);
+            logger.info("Update Monitoring Log Success");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (MonitoringLogException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -61,7 +61,7 @@ public class FieldController {
 
         // Save field
         fieldService.saveField(buildFieldDTO);
-
+        logger.info("Save field successfully");
         return new ResponseEntity<>(HttpStatus.CREATED);
     } catch (DataPersistFailedException e) {
         return new ResponseEntity<>("Error saving field data", HttpStatus.BAD_REQUEST);
@@ -81,15 +81,15 @@ public class FieldController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PatchMapping (value = "/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping (value = "/{fieldCode}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateFields (
-            @PathVariable ("id") String id,
+            @PathVariable ("fieldCode") String id,
             @RequestParam ("fieldName") String fieldName,
-            @RequestParam ("fieldSize") double fieldSize,
+            @RequestParam ("extentSize") double fieldSize,
             @RequestParam("latitude") double latitude,
             @RequestParam("longitude") double longitude,
-            @RequestParam("fieldImage1") MultipartFile fieldImage1,
-            @RequestParam("fieldImage2") MultipartFile fieldImage2,
+            @RequestParam("image1") MultipartFile fieldImage1,
+            @RequestParam("image2") MultipartFile fieldImage2,
             @RequestParam("equipmentCode") String equipmentCode,
             @RequestParam("staffId")List<String> staffId
     ){
@@ -109,6 +109,7 @@ public class FieldController {
             fieldDTO.setEquipmentCode(equipmentCode);
             fieldDTO.setStaffId(staffId);
             fieldService.updateField(id,fieldDTO);
+            logger.info("Update field successfully");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (IOException e) {
             throw new RuntimeException(e);

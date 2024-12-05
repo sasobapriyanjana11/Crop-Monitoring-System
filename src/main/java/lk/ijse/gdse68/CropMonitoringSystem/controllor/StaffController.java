@@ -6,6 +6,8 @@ import lk.ijse.gdse68.CropMonitoringSystem.exception.DataPersistFailedException;
 import lk.ijse.gdse68.CropMonitoringSystem.exception.StaffNotFoundException;
 import lk.ijse.gdse68.CropMonitoringSystem.service.StaffService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,12 +25,16 @@ public class StaffController {
     @Autowired
     private StaffService staffService;
 
+    static Logger logger = LoggerFactory.getLogger(StaffController.class);
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveStaff(@RequestBody StaffDto staffDto) {
         try{
             staffService.saveStaff(staffDto);
+            logger.info("staff saved");
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch(DataPersistFailedException e){
+            logger.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }catch(Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -42,9 +48,11 @@ public class StaffController {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             staffService.updateStaff(staff_id, staffDto);
+            logger.info("staff updated");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
         } catch (StaffNotFoundException e) {
+            logger.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         } catch (Exception e) {
@@ -56,6 +64,7 @@ public class StaffController {
         public ResponseEntity<Void> deleteStaff(@PathVariable("staffId") String staff_id){
             try{
                 staffService.deleteStaff(staff_id);
+                logger.info("staff deleted");
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }catch (StaffNotFoundException e){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
