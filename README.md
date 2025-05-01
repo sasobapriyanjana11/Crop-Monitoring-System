@@ -83,6 +83,34 @@ You can view the detailed API documentation with example requests and responses 
   </li>
 </ul>
 
+## Screenshots
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; text-align: center;">
+  <div style="flex: 1 1 calc(50% - 16px); max-width: calc(50% - 16px);">
+    <h3>SignIn Page</h3>
+    <img src="src/main/java/lk/ijse/gdse68/CropMonitoringSystem/assets/images/screen_shots/signin_page.png" alt="Login Page" style="width: 100%; height: auto; border: 1px solid #ccc; border-radius: 8px;">
+  </div>
+  <div style="flex: 1 1 calc(50% - 16px); max-width: calc(50% - 16px);">
+    <h3>Signup Page</h3>
+    <img src="src/main/java/lk/ijse/gdse68/CropMonitoringSystem/assets/images/screen_shots/signup_page.png" alt="Signup Page" style="width: 100%; height: auto; border: 1px solid #ccc; border-radius: 8px;">
+  </div>
+  <div style="flex: 1 1 calc(50% - 16px); max-width: calc(50% - 16px);">
+    <h3>Manager Dashboard Page</h3>
+    <img src="src/main/java/lk/ijse/gdse68/CropMonitoringSystem/assets/images/screen_shots/manager_dashboard.png" alt="manager_dashboard Page" style="width: 100%; height: auto; border: 1px solid #ccc; border-radius: 8px;">
+  </div>
+  <div style="flex: 1 1 calc(50% - 16px); max-width: calc(50% - 16px);">
+    <h3>Equipment Page</h3>
+    <img src="src/main/java/lk/ijse/gdse68/CropMonitoringSystem/assets/images/screen_shots/equipment_page.png" alt="Equipment Page" style="width: 100%; height: auto; border: 1px solid #ccc; border-radius: 8px;">
+  </div>
+  <div style="flex: 1 1 calc(50% - 16px); max-width: calc(50% - 16px);">
+    <h3>Add Equipment Page</h3>
+    <img src="src/main/java/lk/ijse/gdse68/CropMonitoringSystem/assets/images/screen_shots/add_equipment.png" alt="Add Equipment Page" style="width: 100%; height: auto; border: 1px solid #ccc; border-radius: 8px;">
+  </div>
+ <div style="flex: 1 1 calc(50% - 16px); max-width: calc(50% - 16px);">
+    <h3>Crop Management Page</h3>
+    <img src="src/main/java/lk/ijse/gdse68/CropMonitoringSystem/assets/images/screen_shots/crop_page.png" alt="Crop Page" style="width: 100%; height: auto; border: 1px solid #ccc; border-radius: 8px;">
+  </div>
+</div>
+
 ### License
 
 This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
